@@ -1,0 +1,394 @@
+{
+  "info": {
+    "name": "Library Management REST API",
+    "_postman_id": "library-mgmt-api-collection",
+    "description": "Complete Postman collection for testing the Library Management REST API endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "book_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "member_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "issue_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Books",
+      "item": [
+        {
+          "name": "Get All Books (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/books?page=1&per_page=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "books"],
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "per_page", "value": "20"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Books",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/books/search?keyword=code&category=Technology",
+              "host": ["{{base_url}}"],
+              "path": ["api", "books", "search"],
+              "query": [
+                {"key": "keyword", "value": "code"},
+                {"key": "category", "value": "Technology"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Book by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/books/{{book_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "books", "{{book_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Book Borrow History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/books/{{book_id}}/history",
+              "host": ["{{base_url}}"],
+              "path": ["api", "books", "{{book_id}}", "history"]
+            }
+          }
+        },
+        {
+          "name": "Create Book",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"The Art of Computer Programming\",\n  \"author\": \"Donald Knuth\",\n  \"isbn\": \"978-0321751041\",\n  \"category\": \"Technology\",\n  \"total_copies\": 3,\n  \"publication_year\": 1968,\n  \"publisher\": \"Addison-Wesley\",\n  \"shelf_location\": \"C-15\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/books",
+              "host": ["{{base_url}}"],
+              "path": ["api", "books"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var response = pm.response.json();",
+                  "if (response.success && response.data) {",
+                  "  pm.environment.set('book_id', response.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Book",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"total_copies\": 5,\n  \"category\": \"Technology\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/books/{{book_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "books", "{{book_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Book",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/books/{{book_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "books", "{{book_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Members",
+      "item": [
+        {
+          "name": "Get All Members (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/members?page=1&per_page=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "members"],
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "per_page", "value": "20"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Members",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/members/search?keyword=alice",
+              "host": ["{{base_url}}"],
+              "path": ["api", "members", "search"],
+              "query": [{"key": "keyword", "value": "alice"}]
+            }
+          }
+        },
+        {
+          "name": "Get Member by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/members/{{member_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "members", "{{member_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Member Borrow History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/members/{{member_id}}/history",
+              "host": ["{{base_url}}"],
+              "path": ["api", "members", "{{member_id}}", "history"]
+            }
+          }
+        },
+        {
+          "name": "Get Member Active Loans",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/members/{{member_id}}/loans",
+              "host": ["{{base_url}}"],
+              "path": ["api", "members", "{{member_id}}", "loans"]
+            }
+          }
+        },
+        {
+          "name": "Get Member Fines",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/members/{{member_id}}/fines",
+              "host": ["{{base_url}}"],
+              "path": ["api", "members", "{{member_id}}", "fines"]
+            }
+          }
+        },
+        {
+          "name": "Create Member",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Frank Miller\",\n  \"email\": \"frank.miller@example.com\",\n  \"phone\": \"555-0106\",\n  \"address\": \"987 Birch Court, Mountainview\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/members",
+              "host": ["{{base_url}}"],
+              "path": ["api", "members"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var response = pm.response.json();",
+                  "if (response.success && response.data) {",
+                  "  pm.environment.set('member_id', response.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Member",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"555-9999\",\n  \"address\": \"Updated Address Line\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/members/{{member_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "members", "{{member_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Member",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/members/{{member_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "members", "{{member_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Issue / Return",
+      "item": [
+        {
+          "name": "Get All Issue Records",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/issues?page=1&per_page=20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "issues"],
+              "query": [
+                {"key": "page", "value": "1"},
+                {"key": "per_page", "value": "20"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Overdue Records",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/issues/overdue",
+              "host": ["{{base_url}}"],
+              "path": ["api", "issues", "overdue"]
+            }
+          }
+        },
+        {
+          "name": "Get Issue Record by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/issues/{{issue_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "issues", "{{issue_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Issue a Book",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"book_id\": \"{{book_id}}\",\n  \"member_id\": \"{{member_id}}\",\n  \"loan_period_days\": 14\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/issues/issue",
+              "host": ["{{base_url}}"],
+              "path": ["api", "issues", "issue"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var response = pm.response.json();",
+                  "if (response.success && response.data) {",
+                  "  pm.environment.set('issue_id', response.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Return a Book",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/issues/{{issue_id}}/return",
+              "host": ["{{base_url}}"],
+              "path": ["api", "issues", "{{issue_id}}", "return"]
+            }
+          }
+        },
+        {
+          "name": "Dashboard Statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/issues/dashboard",
+              "host": ["{{base_url}}"],
+              "path": ["api", "issues", "dashboard"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
